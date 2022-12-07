@@ -51,7 +51,7 @@ pipeline {
         stage('Terraform apply'){
             steps {
                 script{
-                    def apply = flase
+                    def apply = false
                     try {
                         input message: 'Can you please confirm the apply', ok: 'Ready to Apply the Configuration'
                         apply = true 
