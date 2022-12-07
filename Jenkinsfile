@@ -21,6 +21,32 @@ pipeline {
                 }
             }
         }
+        
+        stage("Terraform validate"){
+            steps{
+                dir('infrastructure/'){
+                    sh "terraform validate"
+                }
+            }
+        }
+
+        stage("Terraform plan"){
+            steps{ 
+                dir('infrastructure/'){
+                    withAWS(credentials: 'terraform', region: 'ap-southeast-1'){
+                        script {
+                            // try {
+                            //     sh "terraform workspace new $WORKSPACE"
+                            // } catch(error){
+                            //     sh "terraform workspace select $WORKSPACE"
+                            // }
+                            sh "terraform plan -out terraform.tfplan; echo \$? > status"
+                            stash name: "terraform-plan", include: "terraform.tfplan"
+                        }
+                    }
+                }
+            }
+        }
     }
     post {
         always{
