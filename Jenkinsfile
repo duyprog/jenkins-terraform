@@ -13,10 +13,12 @@ pipeline {
 
     stages {
         stage("Init Infrastructure") {
-            dir('infrastructure/'){
-                sh "terraform init -input=false"
-                sh "echo \$PWD"
-                sh "whoami"
+            steps{
+                dir('infrastructure/'){
+                    sh "terraform init -input=false"
+                    sh "echo \$PWD"
+                    sh "whoami"
+                }
             }
         }
     }
