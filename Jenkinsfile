@@ -61,8 +61,11 @@ pipeline {
                     }
                     if(apply){
                         dir('infrastructure/'){
-                            unstash "terraform-plan"
-                            sh 'terraform apply terraform.tfplan'
+                            withAWS(credentials: 'terraform', region: 'ap-southeast-1'){
+                                unstash "terraform-plan"
+                                sh 'terraform apply terraform.tfplan'
+                            }
+
                         }
                     }
                 }
