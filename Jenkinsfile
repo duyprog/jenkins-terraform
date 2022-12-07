@@ -57,7 +57,7 @@ pipeline {
                         apply = true 
                     } catch (err) {
                         apply = false 
-                        currentBuild.resule = 'UNSTABLE'
+                        currentBuild.result = 'UNSTABLE'
                     }
                     if(apply){
                         dir('infrastructure/'){
