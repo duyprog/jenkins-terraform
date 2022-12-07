@@ -47,6 +47,27 @@ pipeline {
                 }
             }
         }
+
+        stage('Terraform apply'){
+            steps {
+                script{
+                    def apply = flase
+                    try {
+                        input message: 'Can you please confirm the apply', ok: 'Ready to Apply the Configuration'
+                        apply = true 
+                    } catch (err) {
+                        apply = false 
+                        currentBuild.resule = 'UNSTABLE'
+                    }
+                    if(apply){
+                        dir('infrastructure/'){
+                            unstash "terraform-plan"
+                            sh 'terraform apply terraform.tfplan'
+                        }
+                    }
+                }
+            }
+        }
     }
     post {
         always{
